@@ -12,8 +12,6 @@ public class UserMessage implements Serializable {
 	private String text;
 	private Date createdDate;
 
-	// getter/setterは省略されているので、自分で記述しましょう。
-
 	public int getId() {
 		return id;
 	}
@@ -61,4 +59,7 @@ public class UserMessage implements Serializable {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
+
+	// getter/setterは省略されているので、自分で記述しましょう。
+
 }

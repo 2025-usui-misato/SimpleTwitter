@@ -91,4 +91,61 @@ public class UserService {
 			close(connection);
 		}
 	}
+
+	public User select(int userId) {
+		// TODO 自動生成されたメソッド・スタブ
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			User user = new UserDao().select(connection, userId);
+			commit(connection);
+
+			return user;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+	public void update(User user) {
+
+	    log.info(new Object(){}.getClass().getEnclosingClass().getName() +
+	    " : " + new Object(){}.getClass().getEnclosingMethod().getName());
+
+	    Connection connection = null;
+	    try {
+	        // パスワード暗号化
+	        String encPassword = CipherUtil.encrypt(user.getPassword());
+	        user.setPassword(encPassword);
+
+	        connection = getConnection();
+	        new UserDao().update(connection, user);
+	        commit(connection);
+	    } catch (RuntimeException e) {
+	        rollback(connection);
+		  log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+	        throw e;
+	    } catch (Error e) {
+	        rollback(connection);
+		  log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+	        throw e;
+	    } finally {
+	        close(connection);
+	    }
+	}
+
+
 }

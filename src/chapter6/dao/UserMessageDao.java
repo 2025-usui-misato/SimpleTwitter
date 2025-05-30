@@ -82,10 +82,10 @@ public class UserMessageDao {
 				UserMessage message = new UserMessage();
 				message.setId(rs.getInt("id"));
 				message.setText(rs.getString("text"));
-				message.setUserId(rs.getInt("userId"));
+				message.setUserId(rs.getInt("user_id"));
 				message.setAccount(rs.getString("account"));
 				message.setName(rs.getString("name"));
-				message.setCreatedDate(rs.getTimestamp("createdDate"));
+				message.setCreatedDate(rs.getTimestamp("created_date"));
 
 				messages.add(message);
 			}
