@@ -131,7 +131,7 @@ public class UserService {
 
 		Connection connection = null;
 		try {
-			//passwordってなに？となってしまうので、ここで定義
+			//passwordってなに？となってしまうので、ここで定義.
 			String password = user.getPassword();
 			//パスワードが入力されていたとき = パスワードが空じゃなかったとき
 			if (!StringUtils.isBlank(password)) {
