@@ -73,7 +73,6 @@ public class UserService {
 		try {
 			// パスワード暗号化
 			String encPassword = CipherUtil.encrypt(password);
-
 			connection = getConnection();
 			User user = new UserDao().select(connection, accountOrEmail, encPassword);
 			commit(connection);
@@ -135,10 +134,10 @@ public class UserService {
 			//passwordってなに？となってしまうので、ここで定義
 			String password = user.getPassword();
 			//パスワードが入力されていたとき = パスワードが空じゃなかったとき
-			if(!StringUtils.isEmpty(password)) {
-			//空じゃなかったら（入力されていたら）、パスワード暗号化
-			String encPassword = CipherUtil.encrypt(user.getPassword());
-			user.setPassword(encPassword);
+			if (!StringUtils.isBlank(password)) {
+				//空じゃなかったら（入力されていたら）、パスワード暗号化
+				String encPassword = CipherUtil.encrypt(user.getPassword());
+				user.setPassword(encPassword);
 			}
 
 			connection = getConnection();
