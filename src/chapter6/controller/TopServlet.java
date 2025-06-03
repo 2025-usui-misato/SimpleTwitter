@@ -50,8 +50,10 @@ public class TopServlet extends HttpServlet {
 			isShowMessageForm = true;
 		}
 
+		//List型のmessagesに代入する = selectメソッドを使ってMessageServiceを呼び出して
 		List<UserMessage> messages = new MessageService().select();
 
+		//requestにsetAttributeします、messageを
 		request.setAttribute("messages", messages);
 		request.setAttribute("isShowMessageForm", isShowMessageForm);
 		request.getRequestDispatcher("/top.jsp").forward(request, response);
