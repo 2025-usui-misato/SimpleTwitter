@@ -32,7 +32,7 @@ public class UserMessageDao {
 
 	}
 
-	public List<UserMessage> select(Connection connection, int num) {
+	public List<UserMessage> select(Connection connection, Integer id, int num) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -41,20 +41,35 @@ public class UserMessageDao {
 
 		PreparedStatement ps = null;
 		try {
+
+			//sqlに追加するよ、の分
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT ");
+			//message.idだと長いから、message.idはidに変更しますよ。他のも同様に考える
 			sql.append("    messages.id as id, ");
 			sql.append("    messages.text as text, ");
 			sql.append("    messages.user_id as user_id, ");
 			sql.append("    users.account as account, ");
 			sql.append("    users.name as name, ");
 			sql.append("    messages.created_date as created_date ");
+			//内部結合するテーブル①はmessagesです、
 			sql.append("FROM messages ");
+			//内部結合するテーブル②はusersテーブルです
 			sql.append("INNER JOIN users ");
 			sql.append("ON messages.user_id = users.id ");
+			//表結合されてたものから、user_idを使って取り出したい
+			//でも、毎回じゃなくてuser_idで指定したいときだけ = if文
+			if (id != null) {
+				//idが曖昧だと言われている。でもidが1のレコードの性別を変更する場合つまり =1にしちゃうと、それしか見れない
+				sql.append(" WHERE user_id = ? ");
+			}
 			sql.append("ORDER BY created_date DESC limit " + num);
 
 			ps = connection.prepareStatement(sql.toString());
+
+			if (id != null) {
+				ps.setInt(1, id);
+			}
 
 			ResultSet rs = ps.executeQuery();
 

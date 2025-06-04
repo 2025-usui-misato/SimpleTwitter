@@ -54,11 +54,8 @@ public class TopServlet extends HttpServlet {
 		 * JSPから受け取るように設定
 		 * MessageServiceのselectに引数としてString型のuser_idを追加
 		 */
-		//String userId = request.getParameter("user_id");
-		//List<UserMessage> messages = new MessageService().select(userId);
-
-		//List型のmessagesに代入する = selectメソッドを使ってMessageServiceを呼び出して
-		List<UserMessage> messages = new MessageService().select();
+		String userId = request.getParameter("user_id");
+		List<UserMessage> messages = new MessageService().select(userId);
 
 		//requestにsetAttributeします、messageを
 		request.setAttribute("messages", messages);
