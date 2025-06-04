@@ -98,9 +98,12 @@ public class UserDao {
 			ps.setString(2, accountOrEmail);
 			ps.setString(3, password);
 
+			//SQLを実行すると、ResultSetに格納される
 			ResultSet rs = ps.executeQuery();
 
+			///ResultSet rsを、List<User>に詰め替え
 			List<User> users = toUsers(rs);
+
 			if (users.isEmpty()) {
 				return null;
 			} else if (2 <= users.size()) {
@@ -120,6 +123,7 @@ public class UserDao {
 
 	}
 
+	//ResultSet rsを、List<User>に詰め替えているメソッド
 	private List<User> toUsers(ResultSet rs) throws SQLException {
 
 		log.info(new Object() {
@@ -129,8 +133,13 @@ public class UserDao {
 
 		List<User> users = new ArrayList<User>();
 		try {
+			//rsの数文繰り返している
 			while (rs.next()) {
+
+				//User型の変数[user]を宣言、newする。
 				User user = new User();
+
+				//変数[user]にSetしたい！(rsに入っているいろいろをget)
 				user.setId(rs.getInt("id"));
 				user.setAccount(rs.getString("account"));
 				user.setName(rs.getString("name"));
@@ -140,6 +149,7 @@ public class UserDao {
 				user.setCreatedDate(rs.getTimestamp("created_date"));
 				user.setUpdatedDate(rs.getTimestamp("updated_date"));
 
+				//Listに格納
 				users.add(user);
 			}
 			return users;
@@ -233,6 +243,35 @@ public class UserDao {
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, new Object() {
 			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+
+	public User select(Connection connection, String account) {
+
+		PreparedStatement ps = null;
+		try {
+			String sql = "SELECT * FROM users WHERE account = ?";
+
+			ps = connection.prepareStatement(sql);
+			ps.setString(1, account);
+
+			ResultSet rs = ps.executeQuery();
+
+			List<User> users = toUsers(rs);
+			//SQLの取得結果が、0件のとき（未登録のとき）
+			if (users.isEmpty()) {
+				return null;
+				//SQLの取得結果が2件以上のとき（なぜか重複してるとき）
+			} else if (2 <= users.size()) {
+				throw new IllegalStateException("ユーザーが重複しています");
+				//SQLの取得結果が1件だったとき（正常パターン。登録済みのものがちゃんとおさまっている状態）
+			} else {
+				return users.get(0);
+			}
+		} catch (SQLException e) {
 			throw new SQLRuntimeException(e);
 		} finally {
 			close(ps);

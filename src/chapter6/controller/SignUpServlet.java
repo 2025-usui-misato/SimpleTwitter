@@ -59,6 +59,7 @@ public class SignUpServlet extends HttpServlet {
 		List<String> errorMessages = new ArrayList<String>();
 
 		User user = getUser(request);
+		//もし、userがerrorMessage が有効じゃなかったら =
 		if (!isValid(user, errorMessages)) {
 			request.setAttribute("errorMessages", errorMessages);
 			request.getRequestDispatcher("signup.jsp").forward(request, response);
@@ -84,6 +85,7 @@ public class SignUpServlet extends HttpServlet {
 		return user;
 	}
 
+	//入力したものをここでチェックしている
 	private boolean isValid(User user, List<String> errorMessages) {
 
 		log.info(new Object() {
