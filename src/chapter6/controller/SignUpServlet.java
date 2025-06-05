@@ -59,12 +59,14 @@ public class SignUpServlet extends HttpServlet {
 		List<String> errorMessages = new ArrayList<String>();
 
 		User user = getUser(request);
-		//もし、userがerrorMessage が有効じゃなかったら =
+		//もし、userとerrorMessage が有効じゃなかったら = なにかしらのエラーが発生していたら
 		if (!isValid(user, errorMessages)) {
+			//setAttributeしますよ
 			request.setAttribute("errorMessages", errorMessages);
 			request.getRequestDispatcher("signup.jsp").forward(request, response);
 			return;
 		}
+		//情報がinsertされていく直前
 		new UserService().insert(user);
 		response.sendRedirect("./");
 	}
@@ -116,9 +118,23 @@ public class SignUpServlet extends HttpServlet {
 			errorMessages.add("メールアドレスは50文字以下で入力してください");
 		}
 
+		//使える材料…
+		//return users.get(0);…1件　だったら、登録してあるよ！被ってるよ！登録しないようにしたい
+		//なぜここに → 登録しちゃだめだから、isValidをfalseつまり有効じゃないにしたいから。ここでストップさせてUserService以降にいかないようにしたい
+		//falseのとき → 返ってきたusersのlistの中身が1件以上のとき。１件でもあれば登録NG
+		//ただ、Daoで「どうであれば登録OK、NGかはかけたけど、Servletにいきなり飛ぶことはできないので、Serviceを挟む
+		//Serviceの中で、UserDaoに飛んでるところを呼び出せば、このServletでも返ってきたuserの内容を扱える
+		//User user = new UserService().select(loginUser.getId());
+
+		User registeredUserData = new UserService().select(account);
+		if (registeredUserData != null) {
+			errorMessages.add("すでに存在するアカウントです");
+		}
+
 		if (errorMessages.size() != 0) {
 			return false;
 		}
+
 		return true;
 	}
 }

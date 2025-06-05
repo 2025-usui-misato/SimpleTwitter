@@ -68,6 +68,8 @@ public class LoginServlet extends HttpServlet {
 		}
 
 		HttpSession session = request.getSession();
+		//loginUserを、sessionにsetAttributeしている文
+		//sessionにログインした情報を納めている = ログインした情報は「アカウント名またはメールアドレス、パスワード」
 		session.setAttribute("loginUser", user);
 		response.sendRedirect("./");
 	}

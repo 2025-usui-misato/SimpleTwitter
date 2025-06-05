@@ -47,11 +47,14 @@ public class SettingServlet extends HttpServlet {
 				}.getClass().getEnclosingMethod().getName());
 
 		HttpSession session = request.getSession();
+		//sessionに入っているloginUser（ログインするための情報）をgetしている
 		User loginUser = (User) session.getAttribute("loginUser");
 
 		//User型のuserに代入する = UserServiceのselectメソッドを使って（loginUserからgetIdしたものを）
+		//↑で取ってきたloginUserのIdをキーにして、1レコード取ってきている
 		User user = new UserService().select(loginUser.getId());
 
+		//それを画面に出している
 		request.setAttribute("user", user);
 		request.getRequestDispatcher("setting.jsp").forward(request, response);
 	}
@@ -73,11 +76,15 @@ public class SettingServlet extends HttpServlet {
 		//User型のuserに代入する = getUserメソッドを使ってrequestをgetしている
 		User user = getUser(request);
 
-		//もし（userとerrorMessegeが有効なら
+		//isValid = 期待する状態と一致するか否か
+		//もし（userに対してerrorMessageが合致するものがあるなら）
+		//エラーメッセージ合致するよってなったらcatch文へいく
 		if (isValid(user, errorMessages)) {
 			try {
-				//UserServiceのupdateメソッドを使います(userを）
+				//UserServiceのupdateメソッドを使います(userを引数にして）
+				//UserServiceに飛んでいく
 				new UserService().update(user);
+
 			} catch (NoRowsUpdatedRuntimeException e) {
 				log.warning("他の人によって更新されています。最新のデータを表示しました。データを確認してください。");
 				errorMessages.add("他の人によって更新されています。最新のデータを表示しました。データを確認してください。");
@@ -91,7 +98,6 @@ public class SettingServlet extends HttpServlet {
 			return;
 		}
 
-		//if文に捕まらなければ、ここで新しい情報がセットされて送られる = パスワードの更新がされる
 		session.setAttribute("loginUser", user);
 		response.sendRedirect("./");
 	}
@@ -113,7 +119,7 @@ public class SettingServlet extends HttpServlet {
 		return user;
 	}
 
-	//isValid　入力された入力値のチェック
+	//isValid 入力された入力値のチェック
 	private boolean isValid(User user, List<String> errorMessages) {
 
 		log.info(new Object() {
@@ -121,6 +127,7 @@ public class SettingServlet extends HttpServlet {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
+		//user.id=ご本人情報で、getなんちゃらしてStringに入れている
 		String name = user.getName();
 		String account = user.getAccount();
 		String email = user.getEmail();
@@ -136,6 +143,19 @@ public class SettingServlet extends HttpServlet {
 
 		if (!StringUtils.isEmpty(email) && (50 < email.length())) {
 			errorMessages.add("メールアドレスは50文字以下で入力してください");
+		}
+
+		//UserDaoで書いたUserSelectメソッドを呼び出したいので、UserServiceを呼び出す
+		User registeredUserData = new UserService().select(account);
+		//今自分がシステムを見てるという前提のもと、
+		//条件：①アカウント名がなかったら（nullだったら）NG、②もってきたものが他人のものでもNG
+		//他人のものであること = 1個あるけど、それが今自分が見るのに使っているアカウントじゃない
+		//他人のものであることがわかる条件 = 今自分がログインしている情報と違うもの
+		//ログインするための情報 = アカウント名またはメールアドレス、パスワード
+		//
+
+		if (registeredUserData != null && registeredUserData.getId() != user.getId()) {
+			errorMessages.add("すでに存在するアカウントです");
 		}
 
 		if (errorMessages.size() != 0) {

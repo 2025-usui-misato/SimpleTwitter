@@ -253,14 +253,23 @@ public class UserDao {
 
 		PreparedStatement ps = null;
 		try {
+			//String型のsqlっていう箱に代入する = usersテーブルのaccountを条件にして、全部取ってきたやつ
+			//を、バインド変数にして代入する
 			String sql = "SELECT * FROM users WHERE account = ?";
 
+			//psに代入する = sqlを引数にして、connectionのprepareStatementメソッドを使って
 			ps = connection.prepareStatement(sql);
+			//psのsetStringを使って、バインド変数に値をセットします
 			ps.setString(1, account);
 
+			//ResultSet型のrsに代入する = SQL文を実行したものを
 			ResultSet rs = ps.executeQuery();
 
+			//ぱっと見わかんないけど、usersにResultSet rsを、List<User>に詰め替え終わっている
+			//メソッドジャンプしてみて！
 			List<User> users = toUsers(rs);
+
+			//詰め替え終わったusersを使って、
 			//SQLの取得結果が、0件のとき（未登録のとき）
 			if (users.isEmpty()) {
 				return null;
