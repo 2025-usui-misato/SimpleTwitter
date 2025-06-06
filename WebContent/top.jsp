@@ -80,7 +80,7 @@
 					<c:if test="${loginUser.id == message.userId }">
 						<div class="buttonArea">
 							<form action="delete" method="post">
-								<input type="hidden" value="${message.id}" name="deleteMessagesId"  />
+								<input type="hidden" value="${message.id}" name="deleteMessageId"  />
 								<input type="submit" value="削除" />
 							</form>
 						</div>

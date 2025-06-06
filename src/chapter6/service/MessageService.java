@@ -106,4 +106,34 @@ public class MessageService {
 			close(connection);
 		}
 	}
+
+	public void delete(String id) {
+		// TODO 自動生成されたメソッド・スタブ
+
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
+
+		//Connectionを初期化
+		Connection connection = null;
+		try {
+			//同じこと書いてるけど読み下す必要があるのか？
+			connection = getConnection();
+			new MessageDao().delete(connection, id);
+			commit(connection);
+		} catch (RuntimeException e) {
+			rollback(connection);
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw e;
+		} finally {
+			close(connection);
+		}
+		}
 }

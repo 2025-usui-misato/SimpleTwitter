@@ -70,7 +70,7 @@ public class MessageDao {
 	//Daoに新しくメソッドをつくるときのポイント：
 	//①名前をつけてあげる、②戻り値があるかないか、③他のコードを参考にするにしても「なんで動いているのか」がわかっている
 	//connection = DBni接続するための情報
-	public void delete(Connection connection, int id) {
+	public void delete(Connection connection, String id) {
 
 		//psを初期化
 		PreparedStatement ps = null;
@@ -82,7 +82,7 @@ public class MessageDao {
 			//psに代入する = sqlを引数にして、connectionのprepareStatementメソッドを使って
 			ps = connection.prepareStatement(sql);
 			//psのsetStringを使って、バインド変数に値をセットします
-			ps.setInt(1, id);
+			ps.setString(1, id);
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
