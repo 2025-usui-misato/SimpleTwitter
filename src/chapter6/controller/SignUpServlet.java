@@ -78,7 +78,9 @@ public class SignUpServlet extends HttpServlet {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
+		//Userっていう空箱を用意して、User型のuserっていう変数を代入する =　宣言する
 		User user = new User();
+		//request = jspにタグをつくった（名前とかメールアドレスとか）とこに入力された値を取りまして、userに入れます
 		user.setName(request.getParameter("name"));
 		user.setAccount(request.getParameter("account"));
 		user.setPassword(request.getParameter("password"));
