@@ -4,7 +4,10 @@ import static chapter6.utils.CloseableUtil.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,23 +69,23 @@ public class MessageDao {
 		}
 	}
 
-
 	//Daoに新しくメソッドをつくるときのポイント：
 	//①名前をつけてあげる、②戻り値があるかないか、③他のコードを参考にするにしても「なんで動いているのか」がわかっている
 	//connection = DBni接続するための情報
-	public void delete(Connection connection, String id) {
+	public void delete(Connection connection, int id) {
 
 		//psを初期化
 		PreparedStatement ps = null;
 		try {
 			//String型のsqlっていう箱に代入する = messagesテーブルのidを条件にして、全部取ってきたやつ
 			//を、バインド変数にして代入する
-			String sql = "DELETE * FROM messages WHERE id = ?";
+			String sql = "DELETE FROM messages WHERE id = ?";
 
 			//psに代入する = sqlを引数にして、connectionのprepareStatementメソッドを使って
 			ps = connection.prepareStatement(sql);
 			//psのsetStringを使って、バインド変数に値をセットします
-			ps.setString(1, id);
+			ps.setInt(1, id);
+			//executeUpdate = データの更新をするexecute = 実行、update = 更新）
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
@@ -93,4 +96,69 @@ public class MessageDao {
 
 	}
 
+	public Message select(Connection connection, int id) {
+
+		PreparedStatement ps = null;
+		try {
+			String sql = "SELECT * FROM messages WHERE id = ?";
+			ps = connection.prepareStatement(sql);
+			ps.setInt(1, id);
+
+			//受け取とって、使いやすい型・自分が使いたい型に変換する
+			//①SQLを実行し、結果をResultSetに入れる = 受け取り完了
+			//②ResultSetからListに詰め替える → 全てのカラムをまとめて「ResultSet」という型で扱っているため、Stringやintなどとして扱うことができませんので！
+			//executeQuery = データを取得する（execute = 実行、query = 問い合わせ結果）
+			ResultSet rs = ps.executeQuery();
+			//toMessagesメソッドを呼び出している = 呼び出し元がある
+			List<Message> messages = toMessages(rs);
+
+			//Listからmessageを取得する
+			//Where idする（主キーで絞る）時点で１件(１レコード)しか取れない、だから(0) = これはMessage型			
+			return messages.get(0);
+
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+
+	}
+
+	//受け渡す側のメソッド
+	private List<Message> toMessages(ResultSet rs) throws SQLException {
+
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
+
+		//sourceTweetを入れるListを宣言(returnされるのはコレ)
+		List<Message> messages = new ArrayList<Message>();
+
+		try {
+			//rs.next() は、現在の位置から次の1行へ進んでカーソルを当てる
+			//1個取り出す作業
+			while (rs.next()) {
+
+				//つぶやき1個分用の箱（messages）を用意する
+				//編集したい元ツイ
+				Message sourceTweet = new Message();
+
+				//使いやすいように、カラムごとに詰め替える作業
+				sourceTweet.setId(rs.getInt("id"));
+				sourceTweet.setText(rs.getString("text"));
+				sourceTweet.setUserId(rs.getInt("user_id"));
+				sourceTweet.setCreatedDate(rs.getTimestamp("created_date"));
+				sourceTweet.setUpdatedDate(rs.getTimestamp("updated_date"));
+
+				messages.add(sourceTweet);
+
+			}
+
+			return messages;
+
+		} finally {
+			close(rs);
+		}
+	}
 }

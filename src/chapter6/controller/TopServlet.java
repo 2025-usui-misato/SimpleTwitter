@@ -60,6 +60,8 @@ public class TopServlet extends HttpServlet {
 		//requestにsetAttributeします、messageを
 		request.setAttribute("messages", messages);
 		request.setAttribute("isShowMessageForm", isShowMessageForm);
+
+		//Dogetしているときのfoward処理
 		request.getRequestDispatcher("/top.jsp").forward(request, response);
 	}
 }

@@ -107,8 +107,7 @@ public class MessageService {
 		}
 	}
 
-	public void delete(String id) {
-		// TODO 自動生成されたメソッド・スタブ
+	public void delete(int id) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -118,7 +117,6 @@ public class MessageService {
 		//Connectionを初期化
 		Connection connection = null;
 		try {
-			//同じこと書いてるけど読み下す必要があるのか？
 			connection = getConnection();
 			new MessageDao().delete(connection, id);
 			commit(connection);
@@ -135,5 +133,39 @@ public class MessageService {
 		} finally {
 			close(connection);
 		}
+	}
+
+	public Message select(int id) {
+
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			//selectしたら、必ず変数に入れる！！入れないと宙ぶらりんになったままです
+			//逆にdeleteとかupdateはDaoから返ってこないから変数に入れる必要なし
+			Message message = new MessageDao().select(connection, id);
+			commit(connection);
+
+			return message;
+
+		} catch (RuntimeException e) {
+			rollback(connection);
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw e;
+		} finally {
+			close(connection);
 		}
+
+	}
 }
