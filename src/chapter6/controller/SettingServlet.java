@@ -70,7 +70,7 @@ public class SettingServlet extends HttpServlet {
 				}.getClass().getEnclosingMethod().getName());
 
 		HttpSession session = request.getSession();
-		//String型のerrorMessagesリスト型に代入する = String型のリスト型を
+		//String型のerrorMessagesリストを新しくつくりますよ～
 		List<String> errorMessages = new ArrayList<String>();
 
 		//User型のuserに代入する = getUserメソッドを使ってrequestをgetしている

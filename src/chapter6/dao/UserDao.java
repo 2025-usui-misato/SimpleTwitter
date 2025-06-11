@@ -225,7 +225,7 @@ public class UserDao {
 			ps.setString(3, user.getEmail());
 
 			//入力されていなかったら、4descriptionに・5をIDにしたい。なかったときに繰り上げたい
-			//if-else?
+			//if-else
 			if (!StringUtils.isBlank(password)) {
 				ps.setString(4, user.getPassword());
 				ps.setString(5, user.getDescription());

@@ -71,7 +71,7 @@ public class MessageDao {
 
 	//Daoに新しくメソッドをつくるときのポイント：
 	//①名前をつけてあげる、②戻り値があるかないか、③他のコードを参考にするにしても「なんで動いているのか」がわかっている
-	//connection = DBni接続するための情報
+	//connection = DBに接続するための情報
 	public void delete(Connection connection, int id) {
 
 		//psを初期化
@@ -79,6 +79,7 @@ public class MessageDao {
 		try {
 			//String型のsqlっていう箱に代入する = messagesテーブルのidを条件にして、全部取ってきたやつ
 			//を、バインド変数にして代入する
+			//* は使わない = idに紐づいた特定のつぶやきを削除したいから
 			String sql = "DELETE FROM messages WHERE id = ?";
 
 			//psに代入する = sqlを引数にして、connectionのprepareStatementメソッドを使って
@@ -113,7 +114,7 @@ public class MessageDao {
 			List<Message> messages = toMessages(rs);
 
 			//Listからmessageを取得する
-			//Where idする（主キーで絞る）時点で１件(１レコード)しか取れない、だから(0) = これはMessage型			
+			//Where idする（主キーで絞る）時点で１件(１レコード)しか取れない、だから(0) = これはMessage型
 			return messages.get(0);
 
 		} catch (SQLException e) {
@@ -161,4 +162,32 @@ public class MessageDao {
 			close(rs);
 		}
 	}
+
+	//Daoに新しくメソッドをつくるときのポイント：
+	//①名前をつけてあげる、②戻り値があるかないか、③他のコードを参考にするにしても「なんで動いているのか」がわかっている
+	//connection = DBに接続するための情報
+	public void update(Connection connection, String text, int id) {
+
+			//psを初期化
+			PreparedStatement ps = null;
+			try {
+				//messagesテーブルのうち、idが?(=バインド変数)のものについて、textというカラムに?(バインド変数。新しいつぶやき)と入れる。
+				String sql = "UPDATE messages SET text = ? WHERE id = ?";
+
+				ps = connection.prepareStatement(sql);
+				//psのsetStringを使って、バインド変数に値をセットします
+				//1番目の?にtext、2番目の?にid
+				ps.setString(1, text);
+				ps.setInt(2, id);
+				//executeUpdate = データの更新をするexecute = 実行、update = 更新）
+				ps.executeUpdate();
+
+			} catch (SQLException e) {
+				throw new SQLRuntimeException(e);
+			} finally {
+				close(ps);
+			}
+
+		}
+
 }

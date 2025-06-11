@@ -94,7 +94,6 @@ public class UserService {
 	}
 
 	public User select(int userId) {
-		// TODO 自動生成されたメソッド・スタブ
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
 				" : " + new Object() {
