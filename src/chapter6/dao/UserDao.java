@@ -176,11 +176,15 @@ public class UserDao {
 			ResultSet rs = ps.executeQuery();
 
 			List<User> users = toUsers(rs);
+			//もし、↑の結果が1個も入ってなかったら、nullを返す
 			if (users.isEmpty()) {
 				return null;
+			//またもし、結果が2個以上入っていたら例外を投げる
 			} else if (2 <= users.size()) {
 				log.log(Level.SEVERE, "ユーザーが重複しています", new IllegalStateException());
 				throw new IllegalStateException("ユーザーが重複しています");
+			//上ふたつとも違っていて＝1件だけとれてるとき、だったらuser型を返す
+			//リストから1件とったらそれはリストじゃなくなる
 			} else {
 				return users.get(0);
 			}
