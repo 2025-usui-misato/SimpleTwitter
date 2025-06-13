@@ -115,7 +115,18 @@ public class MessageDao {
 
 			//Listからmessageを取得する
 			//Where idする（主キーで絞る）時点で１件(１レコード)しか取れない、だから(0) = これはMessage型
+			//存在するidがあれば↓でよし、なかったらトップ画面とエラーメッセージを表示するようにしたい
+			//エラーメッセージを表示するかしないかっていうのはここじゃなくて、Servletでやるので、Servletにもってきたいときのふるいかけをする
+			//条件2個あって、それぞれ処理が違うのでifelse文使う。ないとき→あるときの順番
+
+			//idが存在しないとき = isEmptyなとき
+			//messagesそのものが空じゃないか判定する。get(0)するのは中身があったうえでやること
+			if(messages.isEmpty()){
+				return null;
+			}
+			//存在するならそのまま渡してあげればいいよね
 			return messages.get(0);
+
 
 		} catch (SQLException e) {
 			throw new SQLRuntimeException(e);

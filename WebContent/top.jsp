@@ -70,7 +70,7 @@
 						</span> <span class="name"><c:out value="${message.name}" /> </span>
 					</div>
 					<div class="text">
-						<c:out value="${message.text}" />
+						<pre><c:out value="${message.text}" /></pre>
 					</div>
 					<div class="date">
 						<fmt:formatDate value="${message.createdDate}"

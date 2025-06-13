@@ -51,4 +51,9 @@ public class Message implements Serializable {
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
+
+	public boolean isEmpty() {
+		return false;
+	}
+
 }
