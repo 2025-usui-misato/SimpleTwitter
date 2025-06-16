@@ -119,17 +119,17 @@ public class EditServlet extends HttpServlet {
 		//表示させるためのメッセージをとってきて、
 		String text = request.getParameter("text");
 
-		//Message型のmessages を新しく宣言
-		//なんで？ = textを詰めてあげないといけないから
-		//表示して保持させたいつぶやき（messages.text）は、textをキーにして取り出せるvalueであるし、取り出したものはしまっとかないと宙ぶらりんになるため
-		Message messages = new Message();
-
-		//messagesに出したいつぶやき（"messages.text"）をセットします
-		messages.setText(text);
-		messages.setId(id);
-
 		//140字よりたくさんあったら
 		if (!isValid(text, errorMessages)) {
+			//Message型のmessages を新しく宣言
+			//なんで？ = textを詰めてあげないといけないから
+			//表示して保持させたいつぶやき（messages.text）は、textをキーにして取り出せるvalueであるし、取り出したものはしまっとかないと宙ぶらりんになるため
+			Message messages = new Message();
+
+			//messagesに出したいつぶやき（"messages.text"）をセットします
+			messages.setText(text);
+			messages.setId(id);
+
 			request.setAttribute("errorMessages", errorMessages);
 			//セット済みの、（出したいつぶやき（"messages.text"）, 型はMessage）を、今度はrequestにセットします
 			request.setAttribute("messages", messages);

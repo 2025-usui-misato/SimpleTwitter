@@ -17,6 +17,7 @@
 				<a href="login">ログイン</a>
 				<a href="signup">登録する</a>
 			</c:if>
+
 			<c:if test="${ not empty loginUser }">
 				<div class="profile">
 					<div class="name">
@@ -33,12 +34,14 @@
 					</div>
 				</div>
 			</c:if>
+
 			<c:if test="${ not empty loginUser }">
 				<a href="./">ホーム</a>
 				<a href="setting">設定</a>
 				<a href="logout">ログアウト</a>
 			</c:if>
 		</div>
+
 		<c:if test="${ not empty errorMessages }">
 			<div class="errorMessages">
 				<ul>
@@ -55,23 +58,28 @@
 				<form action="message" method="post">
 					いま、どうしてる？<br />
 					<textarea name="text" cols="100" rows="5" class="tweet-box"></textarea>
-					<br /> <input type="submit" value="つぶやく">（140文字まで）
+					<br />
+					<input type="submit" value="つぶやく">（140文字まで）
 				</form>
 			</c:if>
 		</div>
+
 		<div class="messages">
 			<c:forEach items="${messages}" var="message">
 				<div class="message">
 					<div class="account-name">
-						<span class="account"> <a
-							href="./?user_id=<c:out value="${message.userId}"/> "> <c:out
-									value="${message.account}" />
+						<span class="account">
+						<a href="./?user_id=<c:out value="${message.userId}"/> ">
+							<c:out value="${message.account}" />
 						</a>
-						</span> <span class="name"><c:out value="${message.name}" /> </span>
+						</span> <span class="name"><c:out value="${message.name}" />
+						</span>
 					</div>
+
 					<div class="text">
 						<pre><c:out value="${message.text}" /></pre>
 					</div>
+
 					<div class="date">
 						<fmt:formatDate value="${message.createdDate}"
 							pattern="yyyy/MM/dd HH:mm:ss" />
@@ -81,25 +89,22 @@
 						<div class="buttonArea">
 							<form action="delete" method="post">
 								<input type="hidden" value="${message.id}"
-									name="deleteMessageId" /> <input type="submit" value="削除" />
+									name="deleteMessageId" />
+								<input type="submit" value="削除" />
 							</form>
 
 							<form action="edit" method="get">
 								<input type="hidden" value="${message.id}"
-									name="updateMessageId" /> <input type="submit" value="編集" />
+									name="updateMessageId" />
+								<input type="submit" value="編集" />
 							</form>
 						</div>
-
 					</c:if>
-
 				</div>
 			</c:forEach>
 		</div>
-
-
 
 		<div class="copyright">Copyright(c)MisatoUsui</div>
 	</div>
 </body>
 </html>
-

@@ -23,8 +23,6 @@
 			</div>
 		</c:if>
 
-
-
 		<c:if test="${ not empty loginUser }">
 			<a href="./">ホーム</a>
 			<a href="setting">設定</a>
@@ -32,12 +30,15 @@
 		</c:if>
 
 		<form action="edit" method="post">
-			<br /> <input name="updateMessageId" value="${messages.id}" id="id"
+			<br />
+			<input name="updateMessageId" value="${messages.id}" id="id"
 				type="hidden" /> つぶやき<br />
 			<textarea name="text" cols="35" rows="5" id="description">
-					<c:out value="${messages.text}" />
-				</textarea>
-			<input type="submit" value="更新" /> <br /> <a href="./">戻る</a>
+				<c:out value="${messages.text}" />
+			</textarea>
+			<input type="submit" value="更新" />
+			<br />
+			<a href="./">戻る</a>
 		</form>
 
 		<div class="copyright">Copyright(c)MisatoUsui</div>
