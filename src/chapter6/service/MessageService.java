@@ -180,7 +180,7 @@ public class MessageService {
 		Connection connection = null;
 		try {
 			connection = getConnection();
-			new MessageDao().update(connection,text, id);
+			new MessageDao().update(connection, text, id);
 			commit(connection);
 		} catch (RuntimeException e) {
 			rollback(connection);

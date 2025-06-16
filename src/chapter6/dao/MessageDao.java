@@ -121,12 +121,11 @@ public class MessageDao {
 
 			//idが存在しないとき = isEmptyなとき
 			//messagesそのものが空じゃないか判定する。get(0)するのは中身があったうえでやること
-			if(messages.isEmpty()){
+			if (messages.isEmpty()) {
 				return null;
 			}
 			//存在するならそのまま渡してあげればいいよね
 			return messages.get(0);
-
 
 		} catch (SQLException e) {
 			throw new SQLRuntimeException(e);
@@ -179,26 +178,26 @@ public class MessageDao {
 	//connection = DBに接続するための情報
 	public void update(Connection connection, String text, int id) {
 
-			//psを初期化
-			PreparedStatement ps = null;
-			try {
-				//messagesテーブルのうち、idが?(=バインド変数)のものについて、textというカラムに?(バインド変数。新しいつぶやき)と入れる。
-				String sql = "UPDATE messages SET text = ? WHERE id = ?";
+		//psを初期化
+		PreparedStatement ps = null;
+		try {
+			//messagesテーブルのうち、idが?(=バインド変数)のものについて、textというカラムに?(バインド変数。新しいつぶやき)と入れる。
+			String sql = "UPDATE messages SET text = ? WHERE id = ?";
 
-				ps = connection.prepareStatement(sql);
-				//psのsetStringを使って、バインド変数に値をセットします
-				//1番目の?にtext、2番目の?にid
-				ps.setString(1, text);
-				ps.setInt(2, id);
-				//executeUpdate = データの更新をするexecute = 実行、update = 更新）
-				ps.executeUpdate();
+			ps = connection.prepareStatement(sql);
+			//psのsetStringを使って、バインド変数に値をセットします
+			//1番目の?にtext、2番目の?にid
+			ps.setString(1, text);
+			ps.setInt(2, id);
+			//executeUpdate = データの更新をするexecute = 実行、update = 更新）
+			ps.executeUpdate();
 
-			} catch (SQLException e) {
-				throw new SQLRuntimeException(e);
-			} finally {
-				close(ps);
-			}
-
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
 		}
+
+	}
 
 }
