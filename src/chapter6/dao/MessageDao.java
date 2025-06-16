@@ -182,7 +182,7 @@ public class MessageDao {
 		PreparedStatement ps = null;
 		try {
 			//messagesテーブルのうち、idが?(=バインド変数)のものについて、textというカラムに?(バインド変数。新しいつぶやき)と入れる。
-			String sql = "UPDATE messages SET text = ? WHERE id = ?";
+			String sql = "UPDATE messages SET text = ?, updated_date = CURRENT_TIMESTAMP WHERE id = ?";
 
 			ps = connection.prepareStatement(sql);
 			//psのsetStringを使って、バインド変数に値をセットします

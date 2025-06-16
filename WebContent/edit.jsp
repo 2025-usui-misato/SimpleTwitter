@@ -29,10 +29,27 @@
 			<a href="logout">ログアウト</a>
 		</c:if>
 
+		<c:if test="${ not empty loginUser }">
+			<div class="profile">
+				<div class="name">
+					<h2>
+						<c:out value="${loginUser.name}" />
+					</h2>
+				</div>
+				<div class="account">
+					@
+					<c:out value="${loginUser.account}" />
+				</div>
+				<div class="description">
+					<c:out value="${loginUser.description}" />
+				</div>
+			</div>
+		</c:if>
+
 		<form action="edit" method="post">
 			<br />
 			<input name="updateMessageId" value="${messages.id}" id="id"
-				type="hidden" /> つぶやき<br />
+				type="hidden" />つぶやき<br />
 			<textarea name="text" cols="35" rows="5" id="description">
 				<c:out value="${messages.text}" />
 			</textarea>
