@@ -57,7 +57,8 @@
 			<c:if test="${ isShowMessageForm }">
 				<form action="message" method="post">
 					いま、どうしてる？<br />
-					<textarea name="text" cols="100" rows="5" class="tweet-box"></textarea>
+					<textarea name="text" cols="100" rows="5" class="tweet-box">
+					</textarea>
 					<br />
 					<input type="submit" value="つぶやく">（140文字まで）
 				</form>
@@ -76,30 +77,41 @@
 						<span class="name"><c:out value="${message.name}" />
 						</span>
 					</div>
+				</div>
 
-					<div class="text">
-						<pre><c:out value="${message.text}" /></pre>
+				<div class="text">
+					<pre>
+					<c:out value="${message.text}" />
+					</pre>
+				</div>
+
+				<div class="date">
+					<fmt:formatDate value="${message.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" />
+				</div>
+				<c:if test="${loginUser.id == message.userId }">
+					<div class="buttonArea">
+						<form action="delete" method="post">
+						<input type="hidden" value="${message.id}" name="deleteMessageId" />
+						<input type="submit" value="削除" />
+						</form>
+						<form action="edit" method="get">
+						<input type="hidden" value="${message.id}" name="updateMessageId" />
+						<input type="submit" value="編集" />
+						</form>
 					</div>
+				</c:if>
 
-					<div class="date">
-						<fmt:formatDate value="${message.createdDate}"
-							pattern="yyyy/MM/dd HH:mm:ss" />
-					</div>
-
+				<div class="comment">
 					<c:if test="${loginUser.id == message.userId }">
-						<div class="buttonArea">
-							<form action="delete" method="post">
-								<input type="hidden" value="${message.id}"
-									name="deleteMessageId" />
-								<input type="submit" value="削除" />
-							</form>
-
-							<form action="edit" method="get">
-								<input type="hidden" value="${message.id}"
-									name="updateMessageId" />
-								<input type="submit" value="編集" />
-							</form>
-						</div>
+						<form action="comment" method="post">
+						<input type="hidden" value="${message.id}" name="commentMessageId" />
+						返信
+						<br />
+						<textarea name="text" cols="100" rows="5" class="comment-box">
+						</textarea>
+						<br />
+						<input type="submit" value="返信">
+						</form>
 					</c:if>
 				</div>
 			</c:forEach>

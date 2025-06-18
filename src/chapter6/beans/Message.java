@@ -56,4 +56,8 @@ public class Message implements Serializable {
 		return false;
 	}
 
+	public int getMessageId() {
+		return 0;
+	}
+
 }
