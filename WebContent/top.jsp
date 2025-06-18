@@ -113,6 +113,7 @@
 						<input type="submit" value="返信">
 						</form>
 					</c:if>
+
 				</div>
 			</c:forEach>
 		</div>
