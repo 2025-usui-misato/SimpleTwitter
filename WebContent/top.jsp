@@ -103,7 +103,9 @@
 				</c:if>
 
 
-				//ここに返信の表示をしたい
+				<%-- ここに返信を表示したい --%>
+				<%-- 似てるもの：つぶやきの表示 --%>
+
 
 				<div class="comment">
 					<c:if test="${loginUser.id == message.userId }">
