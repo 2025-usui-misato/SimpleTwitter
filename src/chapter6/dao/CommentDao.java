@@ -40,6 +40,7 @@ public class CommentDao {
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append("INSERT INTO comments ( ");
+			//idはわざわざ書かなくていい = auto_incrementにしてあるから、勝手に生成される
 			sql.append("    text, ");
 			sql.append("    user_id, ");
 			sql.append("    message_id, ");
@@ -56,7 +57,7 @@ public class CommentDao {
 			ps = connection.prepareStatement(sql.toString());
 
 			//psに、バインド変数にしたところの値をつめていく
-			//idは自動付番されるので（auto_incrementだから）わざわざ書かなくてOK
+			//idは自動付番されているので、1番目にくるのはtext
 
 			ps.setString(1, message.getText());
 			ps.setInt(2, message.getUserId());

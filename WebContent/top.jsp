@@ -78,6 +78,7 @@
 						</span>
 					</div>
 				</div>
+			</c:forEach>
 
 				<div class="text">
 					<pre>
@@ -101,6 +102,9 @@
 					</div>
 				</c:if>
 
+
+				//ここに返信の表示をしたい
+
 				<div class="comment">
 					<c:if test="${loginUser.id == message.userId }">
 						<form action="comment" method="post">
@@ -115,7 +119,6 @@
 					</c:if>
 
 				</div>
-			</c:forEach>
 		</div>
 
 		<div class="copyright">Copyright(c)MisatoUsui</div>

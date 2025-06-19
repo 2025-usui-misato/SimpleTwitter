@@ -24,16 +24,33 @@
 		</c:if>
 
 		<form action="signup" method="post">
-			<br /> <label for="name">名前</label> <input name="name" id="name" />（名前はあなたの公開プロフィールに表示されます）<br />
+			<br />
+			 <label for="name">名前
+			 </label>
+			 <input name="name" id="name" />（名前はあなたの公開プロフィールに表示されます）
+			 <br />
 
-			<label for="account">アカウント名</label> <input name="account"
-				id="account" /> <br /> <label for="password">パスワード</label> <input
-				name="password" type="password" id="password" /> <br /> <label
-				for="email">メールアドレス</label> <input name="email" id="email" /> <br />
+			<label for="account">アカウント名
+			</label>
+			<input name="account" id="account" />
+			<br />
+			<label for="password">パスワード
+			</label>
+			<input name="password" type="password" id="password" />
+			<br />
+			<label for="email">メールアドレス
+			</label>
+			<input name="email" id="email" />
+			<br />
 
-			<label for="description">説明</label>
-			<textarea name="description" cols="35" rows="5" id="description"></textarea>
-			<br /> <input type="submit" value="登録" /> <br /> <a href="./">戻る</a>
+			<label for="description">説明
+			</label>
+			<textarea name="description" cols="35" rows="5" id="description">
+			</textarea>
+			<br />
+			<input type="submit" value="登録" />
+			<br />
+			<a href="./">戻る</a>
 		</form>
 
 		<div class="copyright">Copyright(c)MisatoUsui</div>
