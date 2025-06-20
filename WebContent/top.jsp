@@ -102,23 +102,45 @@
 				</c:if>
 
 				<div class="comment">
-					<c:if test="${loginUser.id == message.userId }">
-						<form action="comment" method="post">
-						<input type="hidden" value="${message.id}" name="commentMessageId" />
-						返信
-						<br />
-						<textarea name="text" cols="100" rows="5" class="comment-box">
-						</textarea>
-						<br />
-						<input type="submit" value="返信">
-						</form>
+					<!-- 条件式：messageのidと、commentsのmessage_idが一緒だったら -->
+					<c:if test="${ message.id == comment.messageId }">
+					<!-- なにを繰り返すのか：アカウント名、名前、返信内容、返信日時を表示するのを -->
+						<div class="account-name">
+							<span class="account">
+							<!-- <a hreでリンクをつくる。どうやって飛ぶか？ = 返信した人のuser_idで -->
+							<a href="./?user_id=<c:out value="${comment.userId}"/> ">
+								<c:out value="${user.account}" />
+							</a>
+							</span>
+							<span class="name">
+								<c:out value="${comment.name}" />
+							</span>
+						</div>
+					<div class="text">
+						<pre>
+							<c:out value="${comment.text}" />
+						</pre>
+					</div>
+					<div class="date">
+						<fmt:formatDate value="${comment.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" />
+					</div>
 					</c:if>
-
 				</div>
-			</c:forEach>
+
+				<div class="comment-form-area">
+				<form action="comment" method="post">
+					<input type="hidden" value="${message.id}" name="commentMessageId" />
+					返信
+					<br />
+					<textarea name="text" cols="100" rows="5" class="comment-box">
+					</textarea>
+					<br />
+					<input type="submit" value="返信">
+				</form>
+		</div>
+		</c:forEach>
 		</div>
 
 		<div class="copyright">Copyright(c)MisatoUsui</div>
-	</div>
 </body>
 </html>
