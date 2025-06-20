@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServlet;
 
 import chapter6.logging.InitApplication;
 
-
 public class UserCommentDao extends HttpServlet {
 
 	/**
@@ -23,4 +22,6 @@ public class UserCommentDao extends HttpServlet {
 		application.init();
 
 	}
+
+
 }

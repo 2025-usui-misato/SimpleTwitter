@@ -33,6 +33,7 @@ public class CommentServlet extends HttpServlet {
 
 	}
 
+	//返信されて、初めて動く
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
