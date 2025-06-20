@@ -75,7 +75,7 @@ public class CommentDao {
 	}
 
 
-	public void select(Connection connection,  ) {
+	public void select(Connection connection, Integer id, int num) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -121,6 +121,8 @@ public class CommentDao {
 			if (id != null) {
 				ps.setInt(1, id);
 			}
+
+		} catch(Exception e) {
 
 		}
 	}

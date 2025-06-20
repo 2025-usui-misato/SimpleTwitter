@@ -2,12 +2,11 @@ package chapter6.dao;
 
 import java.util.logging.Logger;
 
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 
 import chapter6.logging.InitApplication;
 
-@WebServlet(urlPatterns = { "/comment" })
+
 public class UserCommentDao extends HttpServlet {
 
 	/**
