@@ -101,12 +101,8 @@
 					</div>
 				</c:if>
 
-
-				<%-- ここに返信を表示したい --%>
-				<%-- 似てるもの：つぶやきの表示 --%>
-
-
 				<div class="comment">
+				<c:forEach items="${comments}" var="comment">
 					<!-- 条件式：messageのidと、commentsのmessage_idが一緒だったら -->
 					<c:if test="${ message.id == comment.messageId }">
 					<!-- なにを繰り返すのか：アカウント名、名前、返信内容、返信日時を表示するのを -->
@@ -130,11 +126,12 @@
 						<fmt:formatDate value="${comment.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" />
 					</div>
 					</c:if>
+				</c:forEach>
 				</div>
 
 
 				<div class="comment-form-area">
-				<form action="comment" method="post">
+					<form action="comment" method="post">
 					<input type="hidden" value="${message.id}" name="commentMessageId" />
 					返信
 					<br />
@@ -142,9 +139,9 @@
 					</textarea>
 					<br />
 					<input type="submit" value="返信">
-				</form>
-		</div>
-		</c:forEach>
+					</form>
+				</div>
+			</c:forEach>
 		</div>
 	</div>
 		<div class="copyright">Copyright(c)MisatoUsui</div>

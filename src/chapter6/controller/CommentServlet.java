@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import chapter6.beans.Message;
+import chapter6.beans.Comment;
 import chapter6.beans.User;
 import chapter6.logging.InitApplication;
 import chapter6.service.CommentService;
@@ -52,8 +52,8 @@ public class CommentServlet extends HttpServlet {
 
 		//Message型のmessageを宣言する
 		//なんで？ = textも、userIdも、messageIdも詰めたいから。たくさん分けて引数にもってくよりまとめといたほうがよさそう
-		Message message = new Message();
-		message.setText(text);
+		Comment comments = new Comment();
+		comments.setText(text);
 
 		//今回、commentsテーブルにuser_idとmessage_idも追加したいので
 		//①ログイン状態にあって、本人たりえる情報を持ってくる = "loginUser"の中のuser_id
@@ -62,7 +62,7 @@ public class CommentServlet extends HttpServlet {
 		//まず①をする。sessionからもってきてuserに入れとく
 		User user = (User) session.getAttribute("loginUser");
 		//userからgetIdメソッドでidを取ってきて、messageにまとめて入れとく
-		message.setUserId(user.getId());
+		comments.setUserId(user.getId());
 
 		//次に②をする
 		//どこから？ = jspで「返信」ボタンが押されたときに渡ってくるcommentMessageIdから
@@ -71,37 +71,10 @@ public class CommentServlet extends HttpServlet {
 		//なぜ型変換？ = DBに入っているidっていうカラムは、int型だから
 		//渡していくときにもint型にしないとDaoでうまく認識してくれない
 		int id = Integer.parseInt(messageId);
-		message.setId(id);
+		comments.setMessageId(id);
 
-		new CommentService().insert(message);
+		new CommentService().insert(comments);
 		response.sendRedirect("./");
-
-	}
-
-
-
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		log.info(new Object() {
-		}.getClass().getEnclosingClass().getName() +
-				" : " + new Object() {
-				}.getClass().getEnclosingMethod().getName());
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	}
 }

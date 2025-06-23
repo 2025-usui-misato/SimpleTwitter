@@ -60,4 +60,12 @@ public class Message implements Serializable {
 		return 0;
 	}
 
+	public void setAccount(String string) {
+
+	}
+
+	public void setName(String string) {
+
+	}
+
 }
