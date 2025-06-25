@@ -53,6 +53,13 @@
 			<c:remove var="errorMessages" scope="session" />
 		</c:if>
 
+		<div class="date">
+			日付
+			<input type="date" value="start">
+			～
+			<input type="date" value="end" />
+		</div>
+
 		<div class="form-area">
 			<c:if test="${ isShowMessageForm }">
 				<form action="message" method="post">

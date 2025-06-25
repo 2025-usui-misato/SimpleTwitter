@@ -1,6 +1,8 @@
 package chapter6.filter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -39,7 +41,12 @@ public class LoginFilter implements Filter {
 
 		//もしloginUser（ログイン情報）が空だったら = ログインしていなかったら
 		if(user == null) {
+			List<String> errorMessages = new ArrayList<String>();
+			errorMessages.add("ログインしてください");
+			session.setAttribute("errorMessages", errorMessages);
 			httpResponse.sendRedirect("login.jsp");
+			return;
+
 		}else if(user != null) {
 			chain.doFilter(httpRequest, httpResponse); //EditServlet、SettingServletを実行
 		}

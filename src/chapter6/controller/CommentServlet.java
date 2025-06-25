@@ -50,7 +50,7 @@ public class CommentServlet extends HttpServlet {
 		//ここでいうtext = 返信した言葉たち
 		String text = request.getParameter("text");
 
-		//Message型のmessageを宣言する
+		//Comment型のcommentsを宣言する
 		//なんで？ = textも、userIdも、messageIdも詰めたいから。たくさん分けて引数にもってくよりまとめといたほうがよさそう
 		Comment comments = new Comment();
 		comments.setText(text);

@@ -32,7 +32,7 @@ public class UserMessageDao {
 
 	}
 
-	public List<UserMessage> select(Connection connection, Integer id, int num) {
+	public List<UserMessage> select(Connection connection, Integer id, int num, String start, String end) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -57,12 +57,19 @@ public class UserMessageDao {
 			//内部結合するテーブル②はusersテーブルです
 			sql.append("INNER JOIN users ");
 			sql.append("ON messages.user_id = users.id ");
+
+			//日付で絞り込むのは、idがあってもなくてもやりたいのでif文の外に書かないといけない
+			//SELECT * FROM authors WHERE 2 <= id OR id <= 1; を例に、ORを使う？
+
+
+
 			//表結合されてたものから、user_idを使って取り出したい
 			//でも、毎回じゃなくてuser_idで指定したいときだけ = if文
 			if (id != null) {
-				//idが曖昧だと言われている。でもidが1のレコードの性別を変更する場合つまり =1にしちゃうと、それしか見れない
+				//idが曖昧だと言われている。 =1にしちゃうと、それしか見れないのでバインド変数にする
 				sql.append(" WHERE user_id = ? ");
 			}
+
 			sql.append("ORDER BY created_date DESC limit " + num);
 
 			ps = connection.prepareStatement(sql.toString());

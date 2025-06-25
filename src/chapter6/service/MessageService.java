@@ -4,6 +4,8 @@ import static chapter6.utils.CloseableUtil.*;
 import static chapter6.utils.DBUtil.*;
 
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,7 +62,7 @@ public class MessageService {
 		}
 	}
 
-	public List<UserMessage> select(String userId) {
+	public List<UserMessage> select(String userId, String start, String end) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -82,13 +84,49 @@ public class MessageService {
 				id = Integer.parseInt(userId);
 			}
 
+			//startが入力されていたら = nullじゃなかったら
+			//startにはいっている日付に、時間を足す
+			//単純に足し算じゃなくて、加算代入演算子「+=」を使う
+			//+= ： x = x+y になる
+			if (start != null) {
+				start += " 00:00:00";
+
+				//else = 入力されていたら = nullだったら
+				//デフォルト値を設定
+			} else {
+				//この形で渡したいけど、ベタ打ちしてそのまま渡るわけじゃなくて、
+				//stratが空のまま渡ってきていて、このあとのDaoにstartの中にデフォルト値を入れた状態で渡したい
+				start = "2020-01-01 00:00:00";
+			}
+
+			//end が入力されていたら = nullじゃなかったら
+			//endに入っている日付に、時間を足す
+			if (end != null) {
+				end += " 23:59:59";
+
+				//else = 入力されていなかったら = nullだったら
+				//デフォルト値を設定。現在の日時を取得する
+			} else {
+				//現在日時を取得している
+				Date nowDate = new Date();
+				//日時のフォーマットが、自分の意図する（年-月-日）だとは限らないので、意図する形に指定するために宣言
+				SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+				//意図する形に整えられるように宣言した変数のformattedDateに、現在日時を取得するnowDateを使って、
+				//現在日時を意図する形に整えて、formatNowDateに入れる
+				String formatNowDate = formattedDate.format(nowDate);
+
+				//endが空っぽできていて、このあとDaoにはendにデフォルト値を入れた状態で渡したいので、
+				//整えられた現在日時であるformatNowDateを、endに代入する
+				end = formatNowDate;
+			}
+
 			/*
-			* messageDao.selectに引数としてInteger型のidを追加
+			* UserMessageDao.selectに引数としてInteger型のidを追加
 			* idがnullだったら全件取得する
 			* idがnull以外だったら、その値に対応するユーザーIDの投稿を取得する
 			*/
-
-			List<UserMessage> messages = new UserMessageDao().select(connection, id, LIMIT_NUM);
+			List<UserMessage> messages = new UserMessageDao().select(connection, id, LIMIT_NUM, start, end);
 			commit(connection);
 
 			return messages;
