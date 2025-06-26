@@ -59,23 +59,32 @@ public class UserMessageDao {
 			sql.append("ON messages.user_id = users.id ");
 
 			//日付で絞り込むのは、idがあってもなくてもやりたいのでif文の外に書かないといけない
-			//SELECT * FROM authors WHERE 2 <= id OR id <= 1; を例に、ORを使う？
+			//SELECT * FROM authors WHERE 1 <= id AND id < 2; を参考に！
+			//①1 <= idの条件と、② < 2が絶対にくっついた状態で条件付けできる！
 
-
+			//WHERE カラム名 BETWEEN 日付 AND 日付;    で、2つの日付の間にあるものを指定できる
+			//これが曖昧だって言われているので、
+			//created_dateが？（バインド変数）のとき、startからendまでの日時で絞り込む、とする
+			//どこのテーブルの、なんてカラムなのか！忘れない！
+			sql.append(" WHERE messages.created_date BETWEEN ? AND ? ");
 
 			//表結合されてたものから、user_idを使って取り出したい
 			//でも、毎回じゃなくてuser_idで指定したいときだけ = if文
 			if (id != null) {
 				//idが曖昧だと言われている。 =1にしちゃうと、それしか見れないのでバインド変数にする
-				sql.append(" WHERE user_id = ? ");
+				sql.append(" AND user_id = ? ");
 			}
 
 			sql.append("ORDER BY created_date DESC limit " + num);
 
 			ps = connection.prepareStatement(sql.toString());
 
+			//問い合わせをしたいものをpsにつめるので
+			ps.setString(1, start);
+			ps.setString(2, end);
+
 			if (id != null) {
-				ps.setInt(1, id);
+				ps.setInt(3, id);
 			}
 
 			ResultSet rs = ps.executeQuery();
