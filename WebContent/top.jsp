@@ -55,9 +55,12 @@
 
 		<div class="date">
 			日付
-			<input type="date" value="start">
-			～
-			<input type="date" value="end" />
+			<form action="./" method="get">
+				<input type="date" value="" name="start">
+				～
+				<input type="date" value="" name="end"/>
+				<input type="submit" value="絞込" />
+			</form>
 		</div>
 
 		<div class="form-area">
