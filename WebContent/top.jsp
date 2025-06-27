@@ -148,7 +148,7 @@
 					<textarea name="text" cols="100" rows="5" class="comment-box">
 					</textarea>
 					<br />
-					<input type="submit" value="返信">
+					<input type="submit" value="返信" />
 					</form>
 				</c:if>
 				</div>
