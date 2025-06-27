@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import chapter6.beans.User;
 
-@WebFilter({"/setting","/edit"})
+@WebFilter({ "/setting", "/edit" })
 public class LoginFilter implements Filter {
 
 	@Override
@@ -29,8 +29,8 @@ public class LoginFilter implements Filter {
 
 		//ServletRequestのrequestを、HttpServletRequest型のhttpRequestに変換したい
 		//左辺：変換したい型名 変数名		右辺：（変換したい型名）変換元の変数名
-		HttpServletRequest httpRequest = (HttpServletRequest)request;
-		HttpServletResponse httpResponse = (HttpServletResponse)response;
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		HttpServletResponse httpResponse = (HttpServletResponse) response;
 
 		//sessionの取得の仕方は同じ。どのrequestから取るか？がこれまでとちょっと違う
 		//requestをそのまま使ってしまうと、sessionを取得するためにせっかく型変換したhttpRequestの使いどころがなくなってしまう
@@ -40,17 +40,15 @@ public class LoginFilter implements Filter {
 		User user = (User) session.getAttribute("loginUser");
 
 		//もしloginUser（ログイン情報）が空だったら = ログインしていなかったら
-		if(user == null) {
+		if (user == null) {
 			List<String> errorMessages = new ArrayList<String>();
 			errorMessages.add("ログインしてください");
 			session.setAttribute("errorMessages", errorMessages);
 			httpResponse.sendRedirect("login.jsp");
 			return;
-
-		}else if(user != null) {
-			chain.doFilter(httpRequest, httpResponse); //EditServlet、SettingServletを実行
 		}
 
+		chain.doFilter(httpRequest, httpResponse); //EditServlet、SettingServletを実行
 	}
 
 	@Override

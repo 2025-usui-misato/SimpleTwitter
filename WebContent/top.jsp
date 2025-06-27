@@ -56,7 +56,7 @@
 		<div class="date">
 			日付
 			<form action="./" method="get">
-				<input type="date" value="${start}" name="start">
+				<input type="date" value="${start}" name="start"/>
 				～
 				<input type="date" value="${end}" name="end"/>
 				<input type="submit" value="絞込" />
@@ -70,7 +70,7 @@
 					<textarea name="text" cols="100" rows="5" class="tweet-box">
 					</textarea>
 					<br />
-					<input type="submit" value="つぶやく">（140文字まで）
+					<input type="submit" value="つぶやく"/>（140文字まで）
 				</form>
 			</c:if>
 		</div>
