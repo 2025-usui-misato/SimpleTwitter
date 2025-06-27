@@ -88,7 +88,7 @@ public class MessageService {
 			//startにはいっている日付に、時間を足す
 			//単純に足し算じゃなくて、加算代入演算子「+=」を使う
 			//+= ： x = x+y になる
-			if (start != null) {
+			if (!StringUtils.isEmpty(start)) {
 				start += " 00:00:00";
 
 				//else = 入力されていたら = nullだったら
@@ -101,7 +101,7 @@ public class MessageService {
 
 			//end が入力されていたら = nullじゃなかったら
 			//endに入っている日付に、時間を足す
-			if (end != null) {
+			if (!StringUtils.isEmpty(end)) {
 				end += " 23:59:59";
 
 				//else = 入力されていなかったら = nullだったら

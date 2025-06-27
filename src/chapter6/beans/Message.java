@@ -68,4 +68,8 @@ public class Message implements Serializable {
 
 	}
 
+	public void add(String start) {
+
+	}
+
 }

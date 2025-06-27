@@ -1,6 +1,8 @@
 package chapter6.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -9,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.commons.lang.StringUtils;
 
 import chapter6.beans.Comment;
 import chapter6.beans.User;
@@ -43,6 +47,8 @@ public class CommentServlet extends HttpServlet {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
+		List<String> errorMessages = new ArrayList<String>();
+
 		//Redirectするのに、情報が保持されないからsessionにつめておく
 		HttpSession session = request.getSession();
 
@@ -73,8 +79,35 @@ public class CommentServlet extends HttpServlet {
 		int id = Integer.parseInt(messageId);
 		comments.setMessageId(id);
 
+		if (!isValid(text, errorMessages)) {
+
+			request.setAttribute("errorMessages", errorMessages);
+			request.getRequestDispatcher("./").forward(request, response);
+			return;
+		}
+
 		new CommentService().insert(comments);
 		response.sendRedirect("./");
 
+	}
+
+	private boolean isValid(String text, List<String> errorMessages) {
+
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
+
+		//isBlankなので、nullと空文字（"")と空白文字（" "）をチェックしてくれる
+		if (StringUtils.isBlank(text)) {
+			errorMessages.add("メッセージを入力してください");
+		} else if (140 < text.length()) {
+			errorMessages.add("140文字以下で入力してください");
+		}
+
+		if (errorMessages.size() != 0) {
+			return false;
+		}
+		return true;
 	}
 }
