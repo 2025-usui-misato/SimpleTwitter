@@ -56,6 +56,13 @@ public class CommentServlet extends HttpServlet {
 		//ここでいうtext = 返信した言葉たち
 		String text = request.getParameter("text");
 
+		if (!isValid(text, errorMessages)) {
+
+			session.setAttribute("errorMessages", errorMessages);
+			response.sendRedirect("./");
+			return;
+		}
+
 		//Comment型のcommentsを宣言する
 		//なんで？ = textも、userIdも、messageIdも詰めたいから。たくさん分けて引数にもってくよりまとめといたほうがよさそう
 		Comment comments = new Comment();
@@ -78,13 +85,6 @@ public class CommentServlet extends HttpServlet {
 		//渡していくときにもint型にしないとDaoでうまく認識してくれない
 		int id = Integer.parseInt(messageId);
 		comments.setMessageId(id);
-
-		if (!isValid(text, errorMessages)) {
-
-			request.setAttribute("errorMessages", errorMessages);
-			request.getRequestDispatcher("./").forward(request, response);
-			return;
-		}
 
 		new CommentService().insert(comments);
 		response.sendRedirect("./");

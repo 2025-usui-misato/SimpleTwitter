@@ -127,7 +127,9 @@ public class EditServlet extends HttpServlet {
 			Message messages = new Message();
 
 			//messagesに出したいつぶやき（"messages.text"）をセットします
+			//編集したかったつぶやき（141字以上のもの）を保持するからtextをセット
 			messages.setText(text);
+			//idは紐づけのために要るのでセット
 			messages.setId(id);
 
 			request.setAttribute("errorMessages", errorMessages);
