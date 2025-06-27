@@ -56,9 +56,9 @@
 		<div class="date">
 			日付
 			<form action="./" method="get">
-				<input type="date" value="" name="start">
+				<input type="date" value="${start}" name="start">
 				～
-				<input type="date" value="" name="end"/>
+				<input type="date" value="${end}" name="end"/>
 				<input type="submit" value="絞込" />
 			</form>
 		</div>
@@ -139,8 +139,8 @@
 				</c:forEach>
 				</div>
 
-
 				<div class="comment-form-area">
+				<c:if test="${ not empty loginUser }">
 					<form action="comment" method="post">
 					<input type="hidden" value="${message.id}" name="commentMessageId" />
 					返信
@@ -150,6 +150,7 @@
 					<br />
 					<input type="submit" value="返信">
 					</form>
+				</c:if>
 				</div>
 			</c:forEach>
 		</div>
